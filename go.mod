@@ -9,6 +9,7 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
+	github.com/rs/zerolog v1.20.0
 	github.com/spf13/viper v1.7.1
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 )

@@ -7,6 +7,8 @@ import (
 type Config struct {
 	UploadPath    string `mapstructure:"RAND_PATH"`
 	ServerAddress string `mapstructure:"RAND_LISTEN"`
+	Username      string `mapstructure:"RAND_USER"`
+	Password      string `mapstructure:"RAND_PW"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
