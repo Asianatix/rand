@@ -138,7 +138,7 @@ func main() {
 	}
 
 	// Upload route
-	http.HandleFunc("/upload", uploadHandler)
+	http.HandleFunc("/deployment/upload", uploadHandler)
 
 	//Listen on port 8080
 	log.Info().Msgf("Starting rand: %s", config.ServerAddress)
