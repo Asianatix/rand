@@ -49,7 +49,16 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 
 	// Get handler for filename, size and headers
 	file, handler, err := r.FormFile("distFile")
-	zipTarget := path.Join(config.UploadPath, handler.Filename)
+	channel := r.FormValue("distChannel")
+
+	if channel == "" {
+		channel = "beta"
+	}
+
+	log.Info().Msgf("Using channel %s", channel)
+	channelPath := path.Join(config.UploadPath, channel)
+
+	zipTarget := path.Join(channelPath, handler.Filename)
 
 	if err != nil {
 		log.Error().Err(err).Msg("Error Retrieving the File")
@@ -75,9 +84,9 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	unzip(zipTarget, config.UploadPath)
+	unzip(zipTarget, channelPath)
 	os.Remove(zipTarget)
-	log.Info().Msgf("Uploaded zip deployed: %s", config.UploadPath)
+	log.Info().Msgf("Uploaded zip deployed: %s", channelPath)
 }
 
 func unzip(archive, target string) error {
@@ -134,7 +143,7 @@ func main() {
 	config, err = util.LoadConfig(".")
 
 	if err != nil {
-		log.Fatal().Err(err).Msgf("Cannot start service")
+		log.Fatal().Err(err).Msgf("Cannot load config")
 	}
 
 	// Upload route
@@ -142,5 +151,5 @@ func main() {
 
 	//Listen on port 8080
 	log.Info().Msgf("Starting rand: %s", config.ServerAddress)
-	http.ListenAndServe(config.ServerAddress, nil)
+	log.Fatal().Err(http.ListenAndServe(config.ServerAddress, nil)).Msgf("Cannot start service")
 }
